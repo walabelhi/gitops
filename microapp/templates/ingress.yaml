@@ -1,0 +1,19 @@
+{{- range $name, $svc := .Values.services }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $name }}
+spec:
+  rules:
+    - host: {{ $name }}.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $name }}
+                port:
+                  number: {{ $svc.port }}
+---
+{{- end }}

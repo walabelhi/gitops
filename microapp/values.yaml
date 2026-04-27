@@ -2,11 +2,29 @@ services:
   auth:
     replicaCount: 2
     image: wala12/auth
-    tag: latest
+    tag: 8b5bc4c
     port: 3000
 
   tickets:
     replicaCount: 2
     image: wala12/tickets
     tag: latest
-    port: 4000
+    port: 3000
+
+  payment:
+    replicaCount: 2
+    image: wala12/payments
+    tag: 8b5bc4c
+    port: 3000
+
+  expiration:
+    replicaCount: 2
+    image: wala12/expiration
+    tag: e438b61
+    port: 3000
+
+  orders:
+    replicaCount: 2
+    image: wala12/orders
+    tag: 8b5bc4c
+    port: 3000

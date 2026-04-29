@@ -1,5 +1,55 @@
+
+global:
+  imageTag: latest
+  imagePullPolicy: IfNotPresent
+
+# =========================
+# MICROSERVICES
+# =========================
+services:
+  auth:
+    replicaCount: 2
+    image: wala12/auth
+    tag: 8b5bc4c
+    port: 3000
+
+  tickets:
+    replicaCount: 2
+    image: wala12/tickets
+    tag: latest
+    port: 3000
+
+  payment:
+    replicaCount: 2
+    image: wala12/payments
+    tag: 8b5bc4c
+    port: 3000
+
+  expiration:
+    replicaCount: 2
+    image: wala12/expiration
+    tag: e438b61
+    port: 3000
+
+  orders:
+    replicaCount: 2
+    image: wala12/orders
+    tag: 8b5bc4c
+    port: 3000
+
+  client:
+    replicaCount: 2
+    image: wala12/client
+    tag: latest
+    port: 3000
+
+
+# =========================
+# INGRESS (STRUCTURED MODEL)
+# =========================
 ingress:
   className: nginx
+  enabled: true
 
   hosts:
     rabbit:
@@ -11,22 +61,36 @@ ingress:
     app:
       host: ticketapp.com
 
-auth:
-  service: auth-service
-  port: 3000
+# =========================
+# MONGODB
+# =========================
+mongo:
+  enabled: true
+  image: mongo
+  tag: 6.0
+  port: 27017
+  replicaCount: 1
 
-tickets:
-  service: tickets-service
-  port: 3000
+  persistence:
+    enabled: false
 
-payments:
-  service: payments-service
-  port: 3000
 
-orders:
-  service: orders-service
-  port: 3000
+# =========================
+# RABBITMQ (Operator CRD)
+# =========================
+rabbitmq:
+  enabled: true
+  name: rabbit-service
 
-client:
-  service: client-service
-  port: 3000
+  replicas: 1
+
+  resources:
+    cpu: "1000m"
+    memory: "0.6Gi"
+
+  config:
+    logLevel: debug
+    channelMax: 1700
+    defaultUser: guest
+    defaultPass: guest
+    admin: true

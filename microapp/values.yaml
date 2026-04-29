@@ -1,12 +1,11 @@
 
-
 # =========================
 # GLOBAL
 # =========================
 global:
   imagePullPolicy: IfNotPresent
 
-# Needed by all deployments
+# Default service type (optional fallback)
 service:
   type: ClusterIP
 
@@ -79,6 +78,7 @@ ingress:
 
     app:
       host: ticketapp.com
+      path: /
 
 # =========================
 # MONGODB
@@ -89,6 +89,7 @@ mongo:
   tag: "6.0"
   port: 27017
   replicaCount: 1
+
   persistence:
     enabled: false
 

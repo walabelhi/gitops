@@ -22,11 +22,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: tickets
+  name: {{ .Values.services.tickets.service }}
 spec:
   selector:
     app: tickets
   ports:
     - port: {{ .Values.services.tickets.port }}
       targetPort: {{ .Values.services.tickets.port }}
-  type: {{ .Values.service.type }}
+  type: ClusterIP

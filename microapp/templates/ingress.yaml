@@ -31,38 +31,38 @@ spec:
           pathType: ImplementationSpecific
           backend:
             service:
-              name: {{ .Values.payments.service }}
+              name: {{ .Values.services.payment.service }}
               port:
-                number: {{ .Values.payments.port }}
+                number: {{ .Values.services.payment.port }}
 
         - path: /api/users/?(.*)
           pathType: ImplementationSpecific
           backend:
             service:
-              name: {{ .Values.auth.service }}
+              name: {{ .Values.services.auth.service }}
               port:
-                number: {{ .Values.auth.port }}
+                number: {{ .Values.services.auth.port }}
 
         - path: /api/tickets/?(.*)
           pathType: ImplementationSpecific
           backend:
             service:
-              name: {{ .Values.tickets.service }}
+              name: {{ .Values.services.tickets.service }}
               port:
-                number: {{ .Values.tickets.port }}
+                number: {{ .Values.services.tickets.port }}
 
         - path: /api/orders/?(.*)
           pathType: ImplementationSpecific
           backend:
             service:
-              name: {{ .Values.orders.service }}
+              name: {{ .Values.services.orders.service }}
               port:
-                number: {{ .Values.orders.port }}
+                number: {{ .Values.services.orders.port }}
 
         - path: /?(.*)
           pathType: ImplementationSpecific
           backend:
             service:
-              name: {{ .Values.client.service }}
+              name: {{ .Values.services.client.service }}
               port:
-                number: {{ .Values.client.port }}
+                number: {{ .Values.services.client.port }}

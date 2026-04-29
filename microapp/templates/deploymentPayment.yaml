@@ -22,11 +22,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: payment
+  name: {{ .Values.services.payment.service }}
 spec:
   selector:
     app: payment
   ports:
     - port: {{ .Values.services.payment.port }}
       targetPort: {{ .Values.services.payment.port }}
-  type: {{ .Values.service.type }}
+  type: ClusterIP

@@ -4,38 +4,44 @@ metadata:
   name: auth
 spec:
   replicas: {{ .Values.services.auth.replicas }}
+
   selector:
     matchLabels:
       app: auth
+
   template:
     metadata:
       labels:
         app: auth
+
     spec:
       containers:
         - name: auth
           image: "{{ .Values.services.auth.image }}:{{ .Values.services.auth.tag }}"
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+
           ports:
             - containerPort: {{ .Values.services.auth.port }}
 
+          # ================= ENV FROM VALUES.YAML =================
           env:
-            - name: MONGO_URI
-              value: mongodb://mongo-service:27017/auth
+            {{- range $key, $value := .Values.services.auth.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+            {{- end }}
 
-            - name: RABBITMQ_URL
-              value: amqp://rabbit-service:5672
-
-            - name: JWT_KEY
-              value: "my-secret-key"
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.services.auth.service }}
+
 spec:
   selector:
     app: auth
+
   ports:
     - port: {{ .Values.services.auth.port }}
       targetPort: {{ .Values.services.auth.port }}
+
   type: ClusterIP

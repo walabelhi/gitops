@@ -1,17 +1,4 @@
 
-# =========================
-# GLOBAL
-# =========================
-global:
-  imagePullPolicy: IfNotPresent
-
-# Default service type (optional fallback)
-service:
-  type: ClusterIP
-
-# =========================
-# MICROSERVICES
-# =========================
 services:
   auth:
     image: wala12/auth
@@ -20,7 +7,7 @@ services:
     port: 3000
     service: auth-service
     env:
-      MONGO_URI: mongodb://mongo-service:27017/auth
+      MONGO_URI: mongodb://mongo:27017/auth
       RABBITMQ_URL: amqp://rabbit-service:5672
       JWT_KEY: my-secret-key
 
@@ -30,6 +17,9 @@ services:
     replicas: 2
     port: 3000
     service: tickets-service
+    env:
+      MONGO_URI: mongodb://mongo:27017/tickets
+      RABBITMQ_URL: amqp://rabbit-service:5672
 
   payment:
     image: wala12/payments
@@ -37,6 +27,8 @@ services:
     replicas: 2
     port: 3000
     service: payments-service
+    env:
+      RABBITMQ_URL: amqp://rabbit-service:5672
 
   expiration:
     image: wala12/expiration
@@ -44,6 +36,8 @@ services:
     replicas: 2
     port: 3000
     service: expiration-service
+    env:
+      RABBITMQ_URL: amqp://rabbit-service:5672
 
   orders:
     image: wala12/orders
@@ -52,62 +46,12 @@ services:
     port: 3000
     service: orders-service
     env:
-      MONGO_URI: mongodb://mongo-service:27017/orders
+      MONGO_URI: mongodb://mongo:27017/orders
       RABBITMQ_URL: amqp://rabbit-service:5672
 
   client:
     image: wala12/client
-    tag: latest
+    tag: 8b5bc4c
     replicas: 2
     port: 3000
     service: client-service
-
-# =========================
-# INGRESS
-# =========================
-ingress:
-  className: nginx
-  enabled: true
-
-  hosts:
-    rabbit:
-      host: rabbitlokal.com
-      service: rabbit-service
-      port: 15672
-      path: /
-
-    app:
-      host: ticketapp.com
-      path: /
-
-# =========================
-# MONGODB
-# =========================
-mongo:
-  enabled: true
-  image: mongo
-  tag: "6.0"
-  port: 27017
-  replicaCount: 1
-
-  persistence:
-    enabled: false
-
-# =========================
-# RABBITMQ
-# =========================
-rabbitmq:
-  enabled: true
-  name: rabbit-service
-  replicas: 1
-
-  resources:
-    cpu: "1000m"
-    memory: "0.6Gi"
-
-  config:
-    logLevel: debug
-    channelMax: 1700
-    defaultUser: guest
-    defaultPass: guest
-    admin: true

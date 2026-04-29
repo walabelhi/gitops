@@ -1,37 +1,32 @@
-services:
-  auth:
-    replicaCount: 2
-    image: wala12/auth
-    tag: 8b5bc4c
-    port: 3000
-
-  tickets:
-    replicaCount: 2
-    image: wala12/tickets
-    tag: latest
-    port: 3000
-
-  payment:
-    replicaCount: 2
-    image: wala12/payments
-    tag: 8b5bc4c
-    port: 3000
-
-  expiration:
-    replicaCount: 2
-    image: wala12/expiration
-    tag: e438b61
-    port: 3000
-
-  orders:
-    replicaCount: 2
-    image: wala12/orders
-    tag: 8b5bc4c
-    port: 3000
-
-service:
-  type: ClusterIP
-
 ingress:
-  enabled: true
-  host: microapp.local
+  className: nginx
+
+  hosts:
+    rabbit:
+      host: rabbitlokal.com
+      service: rabbit-service
+      port: 15672
+      path: /
+
+    app:
+      host: ticketapp.com
+
+auth:
+  service: auth-service
+  port: 3000
+
+tickets:
+  service: tickets-service
+  port: 3000
+
+payments:
+  service: payments-service
+  port: 3000
+
+orders:
+  service: orders-service
+  port: 3000
+
+client:
+  service: client-service
+  port: 3000

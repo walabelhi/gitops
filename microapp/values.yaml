@@ -16,7 +16,7 @@ services:
 
   tickets:
     image: wala12/tickets
-    tag: latest
+    tag: 8b5bc4c
     replicas: 2
     port: 3000
     service: tickets-service
@@ -44,7 +44,7 @@ services:
 
   client:
     image: wala12/client
-    tag: latest
+    tag: 8b5bc4c
     replicas: 2
     port: 3000
     service: client-service

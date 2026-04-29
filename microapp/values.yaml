@@ -28,3 +28,10 @@ services:
     image: wala12/orders
     tag: 8b5bc4c
     port: 3000
+
+service:
+  type: ClusterIP
+
+ingress:
+  enabled: true
+  host: microapp.local

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders
+spec:
+  replicas: {{ .Values.services.orders.replicaCount }}
+  selector:
+    matchLabels:
+      app: orders
+  template:
+    metadata:
+      labels:
+        app: orders
+    spec:
+      containers:
+        - name: orders
+          image: "{{ .Values.services.orders.image }}:{{ .Values.services.orders.tag }}"
+          ports:
+            - containerPort: {{ .Values.services.orders.port }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders
+spec:
+  selector:
+    app: orders
+  ports:
+    - port: {{ .Values.services.orders.port }}
+      targetPort: {{ .Values.services.orders.port }}
+  type: {{ .Values.service.type }}

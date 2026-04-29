@@ -1,6 +1,9 @@
 
+
+# =========================
+# GLOBAL SETTINGS
+# =========================
 global:
-  imageTag: latest
   imagePullPolicy: IfNotPresent
 
 # =========================
@@ -13,6 +16,11 @@ services:
     replicas: 2
     port: 3000
     service: auth-service
+
+    env:
+      MONGO_URI: mongodb://mongo-service:27017/auth
+      RABBITMQ_URL: amqp://rabbit-service:5672
+      JWT_KEY: my-secret-key
 
   tickets:
     image: wala12/tickets
@@ -42,6 +50,10 @@ services:
     port: 3000
     service: orders-service
 
+    env:
+      MONGO_URI: mongodb://mongo-service:27017/orders
+      RABBITMQ_URL: amqp://rabbit-service:5672
+
   client:
     image: wala12/client
     tag: 8b5bc4c
@@ -50,7 +62,7 @@ services:
     service: client-service
 
 # =========================
-# INGRESS (STRUCTURED MODEL)
+# INGRESS
 # =========================
 ingress:
   className: nginx
@@ -79,9 +91,8 @@ mongo:
   persistence:
     enabled: false
 
-
 # =========================
-# RABBITMQ (Operator CRD)
+# RABBITMQ
 # =========================
 rabbitmq:
   enabled: true

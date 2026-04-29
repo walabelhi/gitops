@@ -1,10 +1,14 @@
 
 
 # =========================
-# GLOBAL SETTINGS
+# GLOBAL
 # =========================
 global:
   imagePullPolicy: IfNotPresent
+
+# Needed by all deployments
+service:
+  type: ClusterIP
 
 # =========================
 # MICROSERVICES
@@ -16,7 +20,6 @@ services:
     replicas: 2
     port: 3000
     service: auth-service
-
     env:
       MONGO_URI: mongodb://mongo-service:27017/auth
       RABBITMQ_URL: amqp://rabbit-service:5672
@@ -49,14 +52,13 @@ services:
     replicas: 2
     port: 3000
     service: orders-service
-
     env:
       MONGO_URI: mongodb://mongo-service:27017/orders
       RABBITMQ_URL: amqp://rabbit-service:5672
 
   client:
     image: wala12/client
-    tag: 8b5bc4c
+    tag: latest
     replicas: 2
     port: 3000
     service: client-service
@@ -84,10 +86,9 @@ ingress:
 mongo:
   enabled: true
   image: mongo
-  tag: 6.0
+  tag: "6.0"
   port: 27017
   replicaCount: 1
-
   persistence:
     enabled: false
 
@@ -97,7 +98,6 @@ mongo:
 rabbitmq:
   enabled: true
   name: rabbit-service
-
   replicas: 1
 
   resources:

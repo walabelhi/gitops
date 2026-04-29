@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: expiration
 spec:
-  replicas: {{ .Values.services.expiration.replicaCount }}
+  replicas: {{ .Values.services.expiration.replicas }}
   selector:
     matchLabels:
       app: expiration
@@ -22,11 +22,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: expiration
+  name: {{ .Values.services.expiration.service }}
 spec:
   selector:
     app: expiration
   ports:
     - port: {{ .Values.services.expiration.port }}
       targetPort: {{ .Values.services.expiration.port }}
-  type: {{ .Values.service.type }}
+  type: ClusterIP

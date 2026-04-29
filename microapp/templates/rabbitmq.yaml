@@ -1,0 +1,26 @@
+{{- if .Values.rabbitmq.enabled }}
+
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: {{ .Values.rabbitmq.name }}
+spec:
+  replicas: {{ .Values.rabbitmq.replicas }}
+
+  resources:
+    requests:
+      cpu: {{ .Values.rabbitmq.resources.cpu }}
+      memory: {{ .Values.rabbitmq.resources.memory }}
+    limits:
+      cpu: {{ .Values.rabbitmq.resources.cpu }}
+      memory: {{ .Values.rabbitmq.resources.memory }}
+
+  rabbitmq:
+    additionalConfig: |
+      log.console.level = {{ .Values.rabbitmq.config.logLevel }}
+      channel_max = {{ .Values.rabbitmq.config.channelMax }}
+      default_user = {{ .Values.rabbitmq.config.defaultUser }}
+      default_pass = {{ .Values.rabbitmq.config.defaultPass }}
+      default_user_tags.administrator = {{ .Values.rabbitmq.config.admin }}
+
+{{- end }}

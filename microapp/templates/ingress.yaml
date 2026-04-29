@@ -14,7 +14,23 @@ spec:
   - host: {{ .Values.ingress.hosts.rabbit.host }}
     http:
       paths:
-        - path: {{ .Values.ingress.hosts.rabbit.path }}
+        - path: {{ .apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-ticket
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+
+  rules:
+
+  # ================= RabbitMQ =================
+  - host: {{ .Values.ingress.hosts.rabbit.host }}
+    http:
+      paths:
+        - path: {{ .Values.ingress.hosts.rabbit.path | default "/" }}
           pathType: Prefix
           backend:
             service:
@@ -22,12 +38,12 @@ spec:
               port:
                 number: {{ .Values.ingress.hosts.rabbit.port }}
 
-  # ---------------- APP ----------------
+  # ================= APP =================
   - host: {{ .Values.ingress.hosts.app.host }}
     http:
       paths:
 
-        - path: /api/payments/?(.*)
+        - path: /api/payments/.*
           pathType: ImplementationSpecific
           backend:
             service:
@@ -35,7 +51,7 @@ spec:
               port:
                 number: {{ .Values.services.payment.port }}
 
-        - path: /api/users/?(.*)
+        - path: /api/users/.*
           pathType: ImplementationSpecific
           backend:
             service:
@@ -43,7 +59,7 @@ spec:
               port:
                 number: {{ .Values.services.auth.port }}
 
-        - path: /api/tickets/?(.*)
+        - path: /api/tickets/.*
           pathType: ImplementationSpecific
           backend:
             service:
@@ -51,7 +67,7 @@ spec:
               port:
                 number: {{ .Values.services.tickets.port }}
 
-        - path: /api/orders/?(.*)
+        - path: /api/orders/.*
           pathType: ImplementationSpecific
           backend:
             service:
@@ -59,7 +75,7 @@ spec:
               port:
                 number: {{ .Values.services.orders.port }}
 
-        - path: /?(.*)
+        - path: /.*
           pathType: ImplementationSpecific
           backend:
             service:

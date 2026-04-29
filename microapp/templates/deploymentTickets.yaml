@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tickets
+spec:
+  replicas: {{ .Values.services.tickets.replicaCount }}
+  selector:
+    matchLabels:
+      app: tickets
+  template:
+    metadata:
+      labels:
+        app: tickets
+    spec:
+      containers:
+        - name: tickets
+          image: "{{ .Values.services.tickets.image }}:{{ .Values.services.tickets.tag }}"
+          ports:
+            - containerPort: {{ .Values.services.tickets.port }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tickets
+spec:
+  selector:
+    app: tickets
+  ports:
+    - port: {{ .Values.services.tickets.port }}
+      targetPort: {{ .Values.services.tickets.port }}
+  type: {{ .Values.service.type }}

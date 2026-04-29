@@ -1,19 +1,50 @@
-{{- range $name, $svc := .Values.services }}
+{{- if .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ $name }}
+  name: microapp-ingress
 spec:
   rules:
-    - host: {{ $name }}.local
+    - host: {{ .Values.ingress.host }}
       http:
         paths:
-          - path: /
+          - path: /auth/api/
             pathType: Prefix
             backend:
               service:
-                name: {{ $name }}
+                name: auth
                 port:
-                  number: {{ $svc.port }}
----
+                  number: 3000
+
+          - path: /tickets
+            pathType: Prefix
+            backend:
+              service:
+                name: tickets
+                port:
+                  number: 3000
+
+          - path: /payment
+            pathType: Prefix
+            backend:
+              service:
+                name: payment
+                port:
+                  number: 3000
+
+          - path: /expiration
+            pathType: Prefix
+            backend:
+              service:
+                name: expiration
+                port:
+                  number: 3000
+
+          - path: /orders
+            pathType: Prefix
+            backend:
+              service:
+                name: orders
+                port:
+                  number: 3000
 {{- end }}

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+spec:
+  replicas: {{ .Values.services.auth.replicaCount }}
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: "{{ .Values.services.auth.image }}:{{ .Values.services.auth.tag }}"
+          ports:
+            - containerPort: {{ .Values.services.auth.port }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth
+spec:
+  selector:
+    app: auth
+  ports:
+    - port: {{ .Values.services.auth.port }}
+      targetPort: {{ .Values.services.auth.port }}
+  type: {{ .Values.service.type }}

@@ -2,7 +2,7 @@
 services:
   auth:
     image: wala12/auth
-    tag: 8b5bc4c
+    tag: v2
     replicas: 2
     port: 3000
     service: auth-service

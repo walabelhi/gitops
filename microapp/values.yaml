@@ -79,6 +79,9 @@ mongo:
   port: 27017
   replicaCount: 1
 
+  persistence:
+    enabled: false
+
 rabbitmq:
   enabled: true
   name: rabbit-service

@@ -1,25 +1,27 @@
 {{- if and .Values.rabbitmq .Values.rabbitmq.enabled }}
+
 apiVersion: rabbitmq.com/v1beta1
 kind: RabbitmqCluster
 metadata:
-  name: {{ .Values.rabbitmq.name }}
+  name: {{ .Values.rabbitmq.name | default "rabbit-service" }}
+
 spec:
-  replicas: {{ .Values.rabbitmq.replicas }}
+  replicas: {{ .Values.rabbitmq.replicas | default 1 }}
 
   resources:
     requests:
-      cpu: {{ .Values.rabbitmq.resources.cpu }}
-      memory: {{ .Values.rabbitmq.resources.memory }}
+      cpu: {{ .Values.rabbitmq.resources.cpu | default "100m" }}
+      memory: {{ .Values.rabbitmq.resources.memory | default "128Mi" }}
     limits:
-      cpu: {{ .Values.rabbitmq.resources.cpu }}
-      memory: {{ .Values.rabbitmq.resources.memory }}
+      cpu: {{ .Values.rabbitmq.resources.cpu | default "100m" }}
+      memory: {{ .Values.rabbitmq.resources.memory | default "128Mi" }}
 
   rabbitmq:
     additionalConfig: |
-      log.console.level = {{ .Values.rabbitmq.config.logLevel }}
-      channel_max = {{ .Values.rabbitmq.config.channelMax }}
-      default_user = {{ .Values.rabbitmq.config.defaultUser }}
-      default_pass = {{ .Values.rabbitmq.config.defaultPass }}
-      default_user_tags.administrator = {{ .Values.rabbitmq.config.admin }}
+      log.console.level = {{ .Values.rabbitmq.config.logLevel | default "info" }}
+      channel_max = {{ .Values.rabbitmq.config.channelMax | default 2047 }}
+      default_user = {{ .Values.rabbitmq.config.defaultUser | default "guest" }}
+      default_pass = {{ .Values.rabbitmq.config.defaultPass | default "guest" }}
+      default_user_tags.administrator = {{ .Values.rabbitmq.config.admin | default "true" }}
 
 {{- end }}

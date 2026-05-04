@@ -1,57 +1,94 @@
+global:
+  imagePullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
 
 services:
   auth:
     image: wala12/auth
-    tag: v2
+    tag: v3
     replicas: 2
     port: 3000
     service: auth-service
     env:
-      MONGO_URI: mongodb://mongo:27017/auth
+      MONGO_URI: mongodb://mongo-service:27017/auth
       RABBITMQ_URL: amqp://rabbit-service:5672
       JWT_KEY: my-secret-key
 
-  tickets:
-    image: wala12/tickets
-    tag: 8b5bc4c
+  orders:
+    image: wala12/orders
+    tag: latest
     replicas: 2
     port: 3000
-    service: tickets-service
+    service: orders-service
     env:
-      MONGO_URI: mongodb://mongo:27017/tickets
+      MONGO_URI: mongodb://mongo-service:27017/orders
       RABBITMQ_URL: amqp://rabbit-service:5672
 
   payment:
     image: wala12/payments
-    tag: 8b5bc4c
+    tag: latest
     replicas: 2
     port: 3000
     service: payments-service
     env:
       RABBITMQ_URL: amqp://rabbit-service:5672
 
+  tickets:
+    image: wala12/tickets
+    tag: latest
+    replicas: 2
+    port: 3000
+    service: tickets-service
+
   expiration:
     image: wala12/expiration
-    tag: e438b61
+    tag: latest
     replicas: 2
     port: 3000
     service: expiration-service
-    env:
-      RABBITMQ_URL: amqp://rabbit-service:5672
-
-  orders:
-    image: wala12/orders
-    tag: 8b5bc4c
-    replicas: 2
-    port: 3000
-    service: orders-service
-    env:
-      MONGO_URI: mongodb://mongo:27017/orders
-      RABBITMQ_URL: amqp://rabbit-service:5672
 
   client:
     image: wala12/client
-    tag: 8b5bc4c
+    tag: latest
     replicas: 2
     port: 3000
     service: client-service
+
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    rabbit:
+      host: rabbitlokal.com
+      service: rabbit-service
+      port: 15672
+      path: /
+
+    app:
+      host: ticketapp.com
+      service: client-service
+      port: 3000
+      path: /
+
+mongo:
+  enabled: true
+  image: mongo
+  tag: "6.0"
+  port: 27017
+  replicaCount: 1
+
+rabbitmq:
+  enabled: true
+  name: rabbit-service
+  replicas: 1
+  resources:
+    cpu: "1000m"
+    memory: "512Mi"
+  config:
+    logLevel: debug
+    channelMax: 1700
+    defaultUser: guest
+    defaultPass: guest
+    admin: true

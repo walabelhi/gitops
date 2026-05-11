@@ -25,6 +25,7 @@ services:
     env:
       MONGO_URI: mongodb://mongo-service:27017/orders
       RABBITMQ_URL: amqp://rabbit-service:5672
+      JWT_KEY: my-secret-key   # ✅ FIXED
 
   payment:
     image: hammamioumayma/payments
@@ -34,6 +35,7 @@ services:
     service: payments-service
     env:
       RABBITMQ_URL: amqp://rabbit-service:5672
+      JWT_KEY: my-secret-key   # ⚠️ add this too (safe)
 
   tickets:
     image: hammamioumayma/tickets
@@ -41,6 +43,8 @@ services:
     replicas: 2
     port: 3000
     service: tickets-service
+    env:
+      JWT_KEY: my-secret-key   # ⚠️ add if it uses auth middleware
 
   expiration:
     image: hammamioumayma/expiration
@@ -55,42 +59,3 @@ services:
     replicas: 2
     port: 3000
     service: client-service
-
-ingress:
-  enabled: true
-  className: nginx
-  hosts:
-    rabbit:
-      host: rabbitlokal.com
-      service: rabbit-service
-      port: 15672
-      path: /
-
-    app:
-      host: ticketapp.com
-      service: client-service
-      port: 3000
-      path: /
-
-mongo:
-  enabled: true
-  image: mongo
-  tag: "6.0"
-  port: 27017
-  replicaCount: 1
-  persistence:
-    enabled: false
-
-rabbitmq:
-  enabled: true
-  name: rabbit-service
-  replicas: 1
-  resources:
-    cpu: "1000m"
-    memory: "512Mi"
-  config:
-    logLevel: debug
-    channelMax: 1700
-    defaultUser: guest
-    defaultPass: guest
-    admin: true

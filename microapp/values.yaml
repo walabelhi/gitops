@@ -5,10 +5,9 @@ service:
   type: ClusterIP
 
 services:
-
   auth:
-    image: hammamioumayma/auth
-    tag: latest
+    image: wala12/auth
+    tag: v3
     replicas: 2
     port: 3000
     service: auth-service
@@ -18,7 +17,7 @@ services:
       JWT_KEY: my-secret-key
 
   orders:
-    image: hammamioumayma/orders
+    image: wala12/orders
     tag: latest
     replicas: 2
     port: 3000
@@ -26,40 +25,52 @@ services:
     env:
       MONGO_URI: mongodb://mongo-service:27017/orders
       RABBITMQ_URL: amqp://rabbit-service:5672
-      JWT_KEY: my-secret-key
 
   payment:
-    image: hammamioumayma/payments
+    image: wala12/payments
     tag: latest
     replicas: 2
     port: 3000
     service: payments-service
     env:
       RABBITMQ_URL: amqp://rabbit-service:5672
-      STRIPE_KEY: sk_test_dummy_key
 
   tickets:
-    image: hammamioumayma/tickets
+    image: wala12/tickets
     tag: latest
     replicas: 2
     port: 3000
     service: tickets-service
-    env:
-      JWT_KEY: my-secret-key
 
   expiration:
-    image: hammamioumayma/expiration
+    image: wala12/expiration
     tag: latest
     replicas: 2
     port: 3000
     service: expiration-service
 
   client:
-    image: hammamioumayma/client
+    image: wala12/client
     tag: latest
     replicas: 2
     port: 3000
     service: client-service
+
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    rabbit:
+      host: rabbitlokal.com
+      service: rabbit-service
+      port: 15672
+      path: /
+
+    app:
+      host: ticketapp.com
+      service: client-service
+      port: 3000
+      path: /
 
 mongo:
   enabled: true
@@ -67,6 +78,7 @@ mongo:
   tag: "6.0"
   port: 27017
   replicaCount: 1
+
   persistence:
     enabled: false
 

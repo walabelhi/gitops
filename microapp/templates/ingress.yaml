@@ -6,7 +6,7 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: "true"
 
 spec:
-  ingressClassName: {{ .Values.ingress.className | default "nginx" | quote }}
+   ingressClassName: {{ .Values.ingress.className | quote }}
 
   rules:
 
@@ -59,8 +59,8 @@ spec:
                 port:
                   number: {{ .Values.services.orders.port }}
 
-          - path: /
-            pathType: Prefix
+          - path: /(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: {{ .Values.services.client.service | quote }}

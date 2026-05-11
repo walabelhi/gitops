@@ -1,87 +1,87 @@
+global:
+  imagePullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+
 services:
   auth:
-    image: wala12/auth
-    tag: v3
+    image: hammamioumayma/auth
+    tag: latest
     replicas: 2
     port: 3000
     service: auth-service
+    env:
+      MONGO_URI: mongodb://mongo-service:27017/auth
+      RABBITMQ_URL: amqp://rabbit-service:5672
+      JWT_KEY: my-secret-key
 
   orders:
-    image: wala12/orders
+    image: hammamioumayma/orders
     tag: latest
     replicas: 2
     port: 3000
     service: orders-service
+    env:
+      MONGO_URI: mongodb://mongo-service:27017/orders
+      RABBITMQ_URL: amqp://rabbit-service:5672
 
   payment:
-    image: wala12/payments
+    image: hammamioumayma/payments
     tag: latest
     replicas: 2
     port: 3000
     service: payments-service
+    env:
+      RABBITMQ_URL: amqp://rabbit-service:5672
 
   tickets:
-    image: wala12/tickets
+    image: hammamioumayma/tickets
     tag: latest
     replicas: 2
     port: 3000
     service: tickets-service
 
   expiration:
-    image: wala12/expiration
+    image: hammamioumayma/expiration
     tag: latest
     replicas: 2
     port: 3000
     service: expiration-service
 
   client:
-    image: wala12/client
+    image: hammamioumayma/client
     tag: latest
     replicas: 2
     port: 3000
     service: client-service
-services:
-  auth:
-    image: wala12/auth
-    tag: v3
-    replicas: 2
-    port: 3000
-    service: auth-service
 
-  orders:
-    image: wala12/orders
-    tag: latest
-    replicas: 2
-    port: 3000
-    service: orders-service
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    rabbit:
+      host: rabbitlokal.com
+      service: rabbit-service
+      port: 15672
+      path: /
 
-  payment:
-    image: wala12/payments
-    tag: latest
-    replicas: 2
-    port: 3000
-    service: payments-service
+    app:
+      host: ticketapp.com
+      service: client-service
+      port: 3000
+      path: /
 
-  tickets:
-    image: wala12/tickets
-    tag: latest
-    replicas: 2
-    port: 3000
-    service: tickets-service
+mongo:
+  enabled: true
+  image: mongo
+  tag: "6.0"
+  port: 27017
+  replicaCount: 1
+  persistence:
+    enabled: false
 
-  expiration:
-    image: wala12/expiration
-    tag: latest
-    replicas: 2
-    port: 3000
-    service: expiration-service
-
-  client:
-    image: wala12/client
-    tag: latest
-    replicas: 2
-    port: 3000
-    service: client-servicerabbitmq:
+rabbitmq:
   enabled: true
   name: rabbit-service
   replicas: 1

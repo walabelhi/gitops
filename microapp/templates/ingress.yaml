@@ -26,13 +26,14 @@ spec:
     - host: {{ .Values.ingress.hosts.app.host | quote }}
       http:
         paths:
+
           - path: /api/payments(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
-                name: {{ default "payments-service" .Values.services.payment.service | quote }}
+                name: {{ default "payments-service" .Values.services.payments.service | quote }}
                 port:
-                  number: {{ default 3000 .Values.services.payment.port }}
+                  number: {{ default 3000 .Values.services.payments.port }}
 
           - path: /api/users(/|$)(.*)
             pathType: ImplementationSpecific
@@ -40,7 +41,7 @@ spec:
               service:
                 name: {{ default "auth-service" .Values.services.auth.service | quote }}
                 port:
-                  number: {{ default 3001 .Values.services.auth.port }}
+                  number: {{ default 3000 .Values.services.auth.port }}
 
           - path: /api/tickets(/|$)(.*)
             pathType: ImplementationSpecific
@@ -48,7 +49,7 @@ spec:
               service:
                 name: {{ default "tickets-service" .Values.services.tickets.service | quote }}
                 port:
-                  number: {{ default 3002 .Values.services.tickets.port }}
+                  number: {{ default 3000 .Values.services.tickets.port }}
 
           - path: /api/orders(/|$)(.*)
             pathType: ImplementationSpecific
@@ -56,7 +57,7 @@ spec:
               service:
                 name: {{ default "orders-service" .Values.services.orders.service | quote }}
                 port:
-                  number: {{ default 3003 .Values.services.orders.port }}
+                  number: {{ default 3000 .Values.services.orders.port }}
 
           - path: /(.*)
             pathType: ImplementationSpecific

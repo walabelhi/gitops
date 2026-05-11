@@ -30,9 +30,9 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: {{ default "payments-service" .Values.services.payments.service | quote }}
+                name: {{ default "payments-service" .Values.services.payment.service | quote }}
                 port:
-                  number: {{ default 3000 .Values.services.payments.port }}
+                  number: {{ default 3000 .Values.services.payment.port }}
 
           - path: /api/users(/|$)(.*)
             pathType: ImplementationSpecific

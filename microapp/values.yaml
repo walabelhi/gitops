@@ -26,7 +26,7 @@ services:
       MONGO_URI: mongodb://mongo-service:27017/orders
       RABBITMQ_URL: amqp://rabbit-service:5672
 
-  payment:
+  payments:
     image: wala12/payments
     tag: latest
     replicas: 2

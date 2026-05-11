@@ -1,0 +1,11 @@
+wala@wala-VMware-Virtual-Platform:~/micro-app/gitops/microapp$ helm template . --debug
+install.go:225: 2026-05-11 16:21:11.51085736 +0100 CET m=+0.030452470 [debug] Original chart version: ""
+install.go:242: 2026-05-11 16:21:11.510937361 +0100 CET m=+0.030532447 [debug] CHART PATH: /home/wala/micro-app/gitops/microapp
+
+
+Error: parse error at (microapp/templates/deployment.yaml:2): undefined variable "$svc"
+helm.go:92: 2026-05-11 16:21:11.51483854 +0100 CET m=+0.034433626 [debug] parse error at (microapp/templates/deployment.yaml:2): undefined variable "$svc"
+wala@wala-VMware-Virtual-Platform:~/micro-app/gitops/microapp$ helm template microapp .
+Error: parse error at (microapp/templates/deployment.yaml:2): undefined variable "$svc"
+
+Use --debug flag to render out invalid YAML

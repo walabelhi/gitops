@@ -6,6 +6,72 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: "true"
 
 spec:
+  ingressClassName: {{ .Values.ingress.className | quote }}
+
+  rules:
+
+    # ---------------- RabbitMQ ----------------
+    - host: {{ .Values.ingress.hosts.rabbit.host | quote }}
+      http:
+        paths:
+          - path: {{ .Values.ingress.hosts.rabbit.path | default "/" | quote }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.ingress.hosts.rabbit.service | quote }}
+                port:
+                  number: {{ .Values.ingress.hosts.rabbit.port }}
+
+    # ---------------- APP APIs ----------------
+    - host: {{ .Values.ingress.hosts.app.host | quote }}
+      http:
+        paths:
+          - path: /api/payments(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ default "payments-service" .Values.services.payments.service | quote }}
+                port:
+                  number: {{ default 3000 .Values.services.payments.port }}
+
+          - path: /api/users(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ default "auth-service" .Values.services.auth.service | quote }}
+                port:
+                  number: {{ default 3001 .Values.services.auth.port }}
+
+          - path: /api/tickets(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ default "tickets-service" .Values.services.tickets.service | quote }}
+                port:
+                  number: {{ default 3002 .Values.services.tickets.port }}
+
+          - path: /api/orders(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ default "orders-service" .Values.services.orders.service | quote }}
+                port:
+                  number: {{ default 3003 .Values.services.orders.port }}
+
+          - path: /(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ default "client-service" .Values.services.client.service | quote }}
+                port:
+                  number: {{ default 3000 .Values.services.client.port }}apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-ticket
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+
+spec:
    ingressClassName: {{ .Values.ingress.className | quote }}
 
   rules:

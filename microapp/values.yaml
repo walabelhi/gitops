@@ -14,7 +14,7 @@ services:
     env:
       MONGO_URI: mongodb://mongo-service:27017/auth
       RABBITMQ_URL: amqp://rabbit-service:5672
-      JWT_KEY: my-secret-key
+      JWT_KEY: "my-secret-key"
 
   orders:
     image: hammamioumayma/orders
@@ -25,7 +25,7 @@ services:
     env:
       MONGO_URI: mongodb://mongo-service:27017/orders
       RABBITMQ_URL: amqp://rabbit-service:5672
-      JWT_KEY: my-secret-key
+      JWT_KEY: "my-secret-key"
 
   payment:
     image: hammamioumayma/payments
@@ -35,8 +35,7 @@ services:
     service: payments-service
     env:
       RABBITMQ_URL: amqp://rabbit-service:5672
-      STRIPE_API_KEY: sk_test_dummy_key
-      JWT_KEY: my-secret-key
+      STRIPE_API_KEY: "sk_test_dummy_key"
 
   tickets:
     image: hammamioumayma/tickets
@@ -45,7 +44,7 @@ services:
     port: 3000
     service: tickets-service
     env:
-      JWT_KEY: my-secret-key
+      JWT_KEY: "my-secret-key"
 
   expiration:
     image: hammamioumayma/expiration
@@ -95,9 +94,3 @@ rabbitmq:
   resources:
     cpu: "1000m"
     memory: "512Mi"
-  config:
-    logLevel: debug
-    channelMax: 1700
-    defaultUser: guest
-    defaultPass: guest
-    admin: true

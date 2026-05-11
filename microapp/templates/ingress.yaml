@@ -31,38 +31,38 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: {{ default "payments-service" .Values.services.payments.service | quote }}
+                name: {{ .Values.services.payments.service | quote }}
                 port:
-                  number: {{ default 3000 .Values.services.payments.port }}
+                  number: {{ .Values.services.payments.port }}
 
           - path: /api/users(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
-                name: {{ default "auth-service" .Values.services.auth.service | quote }}
+                name: {{ .Values.services.auth.service | quote }}
                 port:
-                  number: {{ default 3000 .Values.services.auth.port }}
+                  number: {{ .Values.services.auth.port }}
 
           - path: /api/tickets(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
-                name: {{ default "tickets-service" .Values.services.tickets.service | quote }}
+                name: {{ .Values.services.tickets.service | quote }}
                 port:
-                  number: {{ default 3000 .Values.services.tickets.port }}
+                  number: {{ .Values.services.tickets.port }}
 
           - path: /api/orders(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
-                name: {{ default "orders-service" .Values.services.orders.service | quote }}
+                name: {{ .Values.services.orders.service | quote }}
                 port:
-                  number: {{ default 3000 .Values.services.orders.port }}
+                  number: {{ .Values.services.orders.port }}
 
           - path: /(.*)
             pathType: ImplementationSpecific
             backend:
               service:
-                name: {{ default "client-service" .Values.services.client.service | quote }}
+                name: {{ .Values.services.client.service | quote }}
                 port:
-                  number: {{ default 3000 .Values.services.client.port }}
+                  number: {{ .Values.services.client.port }}

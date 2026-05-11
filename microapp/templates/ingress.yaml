@@ -6,9 +6,10 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: "true"
 
 spec:
-  ingressClassName: {{ .Values.ingress.className | quote }}
+  ingressClassName: {{ .Values.ingress.className | default "nginx" | quote }}
 
   rules:
+
     # ---------------- RabbitMQ ----------------
     - host: {{ .Values.ingress.hosts.rabbit.host | quote }}
       http:
@@ -21,10 +22,11 @@ spec:
                 port:
                   number: {{ .Values.ingress.hosts.rabbit.port }}
 
-    # ---------------- APP ----------------
+    # ---------------- APP APIs ----------------
     - host: {{ .Values.ingress.hosts.app.host | quote }}
       http:
         paths:
+
           - path: /api/payments(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
@@ -57,8 +59,8 @@ spec:
                 port:
                   number: {{ .Values.services.orders.port }}
 
-          - path: /(.*)
-            pathType: ImplementationSpecific
+          - path: /
+            pathType: Prefix
             backend:
               service:
                 name: {{ .Values.services.client.service | quote }}

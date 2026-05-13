@@ -18,6 +18,10 @@ spec:
           ports:
             - containerPort: {{ .Values.services.expiration.port }}
 
+          env:
+            - name: RABBITMQ_URL
+              value: {{ .Values.services.expiration.env.RABBITMQ_URL | quote }}
+
 ---
 apiVersion: v1
 kind: Service

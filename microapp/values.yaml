@@ -25,7 +25,8 @@ services:
     env:
       MONGO_URI: mongodb://mongo-service:27017/orders
       RABBITMQ_URL: amqp://rabbit-service:5672
-
+      JWT_KEY: my-secret-key
+      
   payment:
     image: wala12/payments
     tag: latest

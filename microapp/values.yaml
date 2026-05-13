@@ -54,6 +54,7 @@ services:
     service: expiration-service
     env:
       RABBITMQ_URL: amqp://rabbit-service:5672
+      MONGO_URI: mongodb://mongo-service:27017/expiration
 
   client:
     image: wala12/client

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: payment
 spec:
-  replicas: {{ .Values.services.payment.replicaCount }}
+  replicas: {{ .Values.services.payment.replicas }}
   selector:
     matchLabels:
       app: payment

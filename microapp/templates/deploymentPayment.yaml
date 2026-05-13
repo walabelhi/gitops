@@ -18,6 +18,13 @@ spec:
           ports:
             - containerPort: {{ .Values.services.payment.port }}
 
+          env:
+            - name: RABBITMQ_URL
+              value: {{ .Values.services.payment.env.RABBITMQ_URL | quote }}
+
+            - name: STRIPE_SECRET_KEY
+              value: {{ .Values.services.payment.env.STRIPE_SECRET_KEY | quote }}
+
 ---
 apiVersion: v1
 kind: Service

@@ -42,6 +42,9 @@ services:
     replicas: 2
     port: 3000
     service: tickets-service
+    env:
+      JWT_KEY: my-secret-key
+      RABBITMQ_URL: amqp://rabbit-service:5672
 
   expiration:
     image: wala12/expiration

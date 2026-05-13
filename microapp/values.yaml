@@ -26,7 +26,7 @@ services:
       MONGO_URI: mongodb://mongo-service:27017/orders
       RABBITMQ_URL: amqp://rabbit-service:5672
       JWT_KEY: my-secret-key
-      
+
   payment:
     image: wala12/payments
     tag: latest
@@ -35,6 +35,7 @@ services:
     service: payments-service
     env:
       RABBITMQ_URL: amqp://rabbit-service:5672
+      STRIPE_SECRET_KEY: dummy-stripe-key   # ✅ ADDED (fix crashloop)
 
   tickets:
     image: wala12/tickets

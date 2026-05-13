@@ -10,7 +10,6 @@ spec:
 
   rules:
 
-    # ---------------- RabbitMQ ----------------
     - host: {{ .Values.ingress.hosts.rabbit.host | quote }}
       http:
         paths:
@@ -22,7 +21,6 @@ spec:
                 port:
                   number: {{ .Values.ingress.hosts.rabbit.port }}
 
-    # ---------------- APP APIs ----------------
     - host: {{ .Values.ingress.hosts.app.host | quote }}
       http:
         paths:
@@ -31,9 +29,9 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: {{ .Values.services.payments.service | quote }}
+                name: {{ .Values.services.payment.service | quote }}
                 port:
-                  number: {{ .Values.services.payments.port }}
+                  number: {{ .Values.services.payment.port }}
 
           - path: /api/users(/|$)(.*)
             pathType: ImplementationSpecific

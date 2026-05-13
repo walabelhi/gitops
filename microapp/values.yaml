@@ -35,7 +35,7 @@ services:
     service: payments-service
     env:
       RABBITMQ_URL: amqp://rabbit-service:5672
-      STRIPE_SECRET_KEY: dummy-stripe-key   # ✅ ADDED (fix crashloop)
+      STRIPE_SECRET_KEY: pk_test_51TWYkd3B48txW3wFuhOoU3hxYveZParC5fsMqSoHtjkefoBz9I68XxI5gZcNBLJhKwcEx1eH6raDGI63iwSUfWVC00hvoVG8UZ
 
   tickets:
     image: wala12/tickets

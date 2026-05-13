@@ -46,6 +46,7 @@ services:
     env:
       JWT_KEY: my-secret-key
       RABBITMQ_URL: amqp://rabbit-service:5672
+      MONGO_URI: mongodb://mongo-service:27017/tickets
 
   expiration:
     image: wala12/expiration

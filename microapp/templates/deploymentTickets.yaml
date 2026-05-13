@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: tickets
 spec:
-  replicas: {{ .Values.services.tickets.replicaCount }}
+  replicas: {{ .Values.services.tickets.replicas }}
   selector:
     matchLabels:
       app: tickets
@@ -17,6 +17,13 @@ spec:
           image: "{{ .Values.services.tickets.image }}:{{ .Values.services.tickets.tag }}"
           ports:
             - containerPort: {{ .Values.services.tickets.port }}
+
+          env:
+            - name: JWT_KEY
+              value: {{ .Values.services.tickets.env.JWT_KEY | quote }}
+
+            - name: RABBITMQ_URL
+              value: {{ .Values.services.tickets.env.RABBITMQ_URL | quote }}
 
 ---
 apiVersion: v1

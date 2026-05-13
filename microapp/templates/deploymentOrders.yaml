@@ -18,6 +18,16 @@ spec:
           ports:
             - containerPort: {{ .Values.services.orders.port }}
 
+          env:
+            - name: JWT_KEY
+              value: {{ .Values.services.orders.env.JWT_KEY | quote }}
+
+            - name: MONGO_URI
+              value: {{ .Values.services.orders.env.MONGO_URI | quote }}
+
+            - name: RABBITMQ_URL
+              value: {{ .Values.services.orders.env.RABBITMQ_URL | quote }}
+
 ---
 apiVersion: v1
 kind: Service

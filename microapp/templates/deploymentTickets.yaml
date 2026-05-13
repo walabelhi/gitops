@@ -20,11 +20,13 @@ spec:
 
           env:
             - name: JWT_KEY
-              value: {{ .Values.services.tickets.env.JWT_KEY | quote }}
+              value: "{{ .Values.services.tickets.env.JWT_KEY }}"
 
             - name: RABBITMQ_URL
-              value: {{ .Values.services.tickets.env.RABBITMQ_URL | quote }}
+              value: "{{ .Values.services.tickets.env.RABBITMQ_URL }}"
 
+            - name: MONGO_URI
+              value: "{{ .Values.services.tickets.env.MONGO_URI }}"
 ---
 apiVersion: v1
 kind: Service

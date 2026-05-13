@@ -49,6 +49,8 @@ services:
     replicas: 2
     port: 3000
     service: expiration-service
+    env:
+      RABBITMQ_URL: amqp://rabbit-service:5672
 
   client:
     image: wala12/client

@@ -38,8 +38,7 @@ services:
 
       # IMPORTANT: use your REAL Stripe SECRET key here
       # MUST start with sk_test_
-      STRIPE_SECRET_KEY: sk_test_YOUR_REAL_SECRET_KEY
-
+    STRIPE_SECRET_KEY: sk_test_xxx
   tickets:
     image: wala12/tickets
     tag: latest

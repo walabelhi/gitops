@@ -93,6 +93,8 @@ mongo:
 rabbitmq:
   enabled: true
   name: rabbit-service
+  service:
+    type: NodePort
   replicas: 1
   resources:
     cpu: "1000m"

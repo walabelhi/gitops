@@ -13,7 +13,7 @@ services:
     service: auth-service
     env:
       MONGO_URI: mongodb://mongo-service:27017/auth
-      RABBITMQ_URL: amqp://rabbit-service:5672
+      RABBITMQ_URL: amqp://wala:Root123!@rabbit-service:5672
       JWT_KEY: my-secret-key
 
   orders:
@@ -24,7 +24,7 @@ services:
     service: orders-service
     env:
       MONGO_URI: mongodb://mongo-service:27017/orders
-      RABBITMQ_URL: amqp://rabbit-service:5672
+      RABBITMQ_URL: amqp://wala:Root123!@rabbit-service:5672
       JWT_KEY: my-secret-key
 
   payment:
@@ -34,8 +34,11 @@ services:
     port: 3000
     service: payments-service
     env:
-      RABBITMQ_URL: amqp://rabbit-service:5672
-      STRIPE_SECRET_KEY: pk_test_51TWYkd3B48txW3wFuhOoU3hxYveZParC5fsMqSoHtjkefoBz9I68XxI5gZcNBLJhKwcEx1eH6raDGI63iwSUfWVC00hvoVG8UZ
+      RABBITMQ_URL: amqp://wala:Root123!@rabbit-service:5672
+
+      # IMPORTANT: use your REAL Stripe SECRET key here
+      # MUST start with sk_test_
+      STRIPE_SECRET_KEY: sk_test_YOUR_REAL_SECRET_KEY
 
   tickets:
     image: wala12/tickets
@@ -45,7 +48,7 @@ services:
     service: tickets-service
     env:
       JWT_KEY: my-secret-key
-      RABBITMQ_URL: amqp://rabbit-service:5672
+      RABBITMQ_URL: amqp://wala:Root123!@rabbit-service:5672
       MONGO_URI: mongodb://mongo-service:27017/tickets
 
   expiration:
@@ -55,7 +58,7 @@ services:
     port: 3000
     service: expiration-service
     env:
-      RABBITMQ_URL: amqp://rabbit-service:5672
+      RABBITMQ_URL: amqp://wala:Root123!@rabbit-service:5672
       MONGO_URI: mongodb://mongo-service:27017/expiration
 
   client:
@@ -68,6 +71,7 @@ services:
 ingress:
   enabled: true
   className: nginx
+
   hosts:
     rabbit:
       host: rabbitlokal.com
@@ -87,18 +91,23 @@ mongo:
   tag: "6.0"
   port: 27017
   replicaCount: 1
+
   persistence:
     enabled: false
 
 rabbitmq:
   enabled: true
   name: rabbit-service
+
   service:
     type: NodePort
+
   replicas: 1
+
   resources:
     cpu: "1000m"
     memory: "512Mi"
+
   config:
     logLevel: debug
     channelMax: 1700

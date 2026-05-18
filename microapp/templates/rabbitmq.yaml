@@ -8,6 +8,9 @@ metadata:
 spec:
   replicas: {{ .Values.rabbitmq.replicas | default 1 }}
 
+  service:
+    type: {{ .Values.rabbitmq.service.type | default "ClusterIP" }}
+
   resources:
     requests:
       cpu: {{ .Values.rabbitmq.resources.cpu | default "100m" }}

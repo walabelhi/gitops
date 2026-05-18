@@ -11,6 +11,10 @@ spec:
   service:
     type: {{ .Values.rabbitmq.service.type | default "ClusterIP" }}
 
+  auth:
+    username: {{ .Values.rabbitmq.auth.username | default "wala" }}
+    password: {{ .Values.rabbitmq.auth.password | default "Root123!" }}
+
   resources:
     requests:
       cpu: {{ .Values.rabbitmq.resources.cpu | default "100m" }}
@@ -23,8 +27,5 @@ spec:
     additionalConfig: |
       log.console.level = {{ .Values.rabbitmq.config.logLevel | default "info" }}
       channel_max = {{ .Values.rabbitmq.config.channelMax | default 2047 }}
-      default_user = {{ .Values.rabbitmq.config.defaultUser | default "guest" }}
-      default_pass = {{ .Values.rabbitmq.config.defaultPass | default "guest" }}
-      default_user_tags.administrator = {{ .Values.rabbitmq.config.admin | default "true" }}
 
 {{- end }}

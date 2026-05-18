@@ -102,6 +102,6 @@ rabbitmq:
   config:
     logLevel: debug
     channelMax: 1700
-    defaultUser: guest
-    defaultPass: guest
+    defaultUser: wala
+    defaultPass: Root123!
     admin: true

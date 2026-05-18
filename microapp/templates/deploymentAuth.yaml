@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: auth
-
 spec:
   replicas: {{ .Values.services.auth.replicas }}
 
@@ -26,10 +25,28 @@ spec:
 
           env:
             - name: MONGO_URI
-              value: mongodb://mongo-service:27017/auth
+              value: {{ .Values.services.auth.env.MONGO_URI | quote }}
 
             - name: RABBITMQ_URL
-              value: amqp://rabbit-service:5672
+              value: {{ .Values.services.auth.env.RABBITMQ_URL | quote }}
 
             - name: JWT_KEY
-              value: "my-secret-key"
+              value: {{ .Values.services.auth.env.JWT_KEY | quote }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.services.auth.service }}
+
+spec:
+  type: ClusterIP
+
+  selector:
+    app: auth
+
+  ports:
+    - port: {{ .Values.services.auth.port }}
+      targetPort: {{ .Values.services.auth.port }}
+      protocol: TCP
